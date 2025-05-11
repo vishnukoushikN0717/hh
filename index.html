@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>For My Wonderful Mom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&family=Pacifico&family=Satisfy&family=Great+Vibes&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'playfair': ['"Playfair Display"', 'serif'],
+                        'dancing': ['"Dancing Script"', 'cursive'],
+                        'poppins': ['Poppins', 'sans-serif'],
+                        'pacifico': ['Pacifico', 'cursive'],
+                        'satisfy': ['Satisfy', 'cursive'],
+                        'great-vibes': ['"Great Vibes"', 'cursive'],
+                    },
+                    colors: {
+                        'mom-pink': '#FFD1DC',
+                        'mom-rose': '#E8B4BC',
+                        'mom-lavender': '#E6E6FA',
+                        'mom-gold': '#FFD700',
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Set English as default
+            showLanguage('english');
+
+            // Add event listeners to language buttons
+            document.getElementById('btn-english').addEventListener('click', function () {
+                showLanguage('english');
+            });
+            document.getElementById('btn-telugu').addEventListener('click', function () {
+                showLanguage('telugu');
+            });
+            document.getElementById('btn-hindi').addEventListener('click', function () {
+                showLanguage('hindi');
+            });
+
+            // Setup background music
+            const bgMusic = document.getElementById('bg-music');
+            const musicToggle = document.getElementById('music-toggle');
+
+            if (bgMusic && musicToggle) {
+                // Set initial volume
+                bgMusic.volume = 0.4;
+
+                // Make sure music is set to autoplay
+                bgMusic.autoplay = true;
+
+                // Unmute the audio after a short delay (workaround for autoplay policies)
+                setTimeout(() => {
+                    bgMusic.muted = false;
+                    console.log('Unmuting audio...');
+                }, 500);
+
+                // Try to unmute immediately as well
+                bgMusic.muted = false;
+
+                // Auto-play may be blocked by browsers, so we'll use the toggle button
+                musicToggle.addEventListener('click', function () {
+                    if (bgMusic.paused) {
+                        bgMusic.muted = false;
+                        bgMusic.play();
+                        musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                        musicToggle.classList.remove('bg-gray-300');
+                        musicToggle.classList.add('bg-mom-rose');
+                    } else {
+                        bgMusic.pause();
+                        musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                        musicToggle.classList.remove('bg-mom-rose');
+                        musicToggle.classList.add('bg-gray-300');
+                    }
+                });
+
+                // Force autoplay with multiple attempts
+                const playAttempt = setInterval(() => {
+                    bgMusic.play()
+                        .then(() => {
+                            bgMusic.muted = false;
+                            clearInterval(playAttempt);
+                            console.log('Autoplay successful!');
+                        })
+                        .catch(e => {
+                            console.log('Autoplay attempt failed. Retrying...');
+                        });
+                }, 500);
+
+                // Try immediate autoplay
+                bgMusic.play()
+                    .then(() => {
+                        bgMusic.muted = false;
+                        console.log('Immediate autoplay successful!');
+                    })
+                    .catch(e => {
+                        console.log('Immediate autoplay failed. Will retry...');
+                        musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                        musicToggle.classList.remove('bg-mom-rose');
+                        musicToggle.classList.add('bg-gray-300');
+                    });
+
+                // Add user interaction listener to the whole document
+                document.addEventListener('click', function playOnFirstInteraction() {
+                    bgMusic.muted = false;
+                    bgMusic.play()
+                        .then(() => {
+                            musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                            musicToggle.classList.remove('bg-gray-300');
+                            musicToggle.classList.add('bg-mom-rose');
+                            document.removeEventListener('click', playOnFirstInteraction);
+                        });
+                }, { once: true });
+
+                // Additional unmute attempts
+                for (let i = 1; i <= 10; i++) {
+                    setTimeout(() => {
+                        bgMusic.muted = false;
+                        bgMusic.play().catch(e => { });
+                        console.log(`Unmute attempt ${i}`);
+                    }, i * 1000);
+                }
+            }
+        });
+
+        function showLanguage(language) {
+            // Hide all language divs
+            document.querySelectorAll('.language-content').forEach(function (el) {
+                el.classList.add('hidden');
+            });
+
+            // Show selected language
+            document.getElementById(language + '-content').classList.remove('hidden');
+
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(function (btn) {
+                btn.classList.remove('bg-mom-rose', 'text-white');
+                btn.classList.add('bg-white', 'text-mom-rose');
+            });
+            document.getElementById('btn-' + language).classList.remove('bg-white', 'text-mom-rose');
+            document.getElementById('btn-' + language).classList.add('bg-mom-rose', 'text-white');
+        }
+    </script>
+    <style>
+        /* Animated beating heart */
+        .heart {
+            position: relative;
+            width: 100px;
+            height: 90px;
+            margin: 30px auto;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 105, 180, 0.5));
+        }
+
+        .heart:before,
+        .heart:after {
+            position: absolute;
+            content: "";
+            left: 50px;
+            top: 0;
+            width: 50px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff6b6b, #ff0a54);
+            border-radius: 50px 50px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .heart:after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+            background: linear-gradient(135deg, #ff0a54, #ff6b6b);
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            15% {
+                transform: scale(1.15);
+            }
+
+            30% {
+                transform: scale(1);
+            }
+
+            45% {
+                transform: scale(1.15);
+            }
+
+            60% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Floating animation */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Text animations */
+        .text-glow {
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5), 0 0 10px rgba(255, 105, 180, 0.3);
+        }
+
+        .love-letter {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .lovely-title {
+            background: linear-gradient(90deg, #ff758c, #ff7eb3, #ff758c);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        /* Background gradient animation */
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Blob animations */
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+
+        @keyframes blob {
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-center p-6"
+    style="background: linear-gradient(135deg, #f8e1f4, #e6e6fa, #f0f8ff); background-size: 400% 400%; animation: gradientBG 15s ease infinite;">
+    <!-- Audio Element (Hidden) -->
+    <audio id="bg-music" loop autoplay muted>
+        <source src="public/mom_music.mp3" type="audio/mpeg">
+        <source src="mom_music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Music Control Button -->
+    <button id="music-toggle"
+        class="fixed top-4 right-4 z-50 bg-mom-rose text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg hover:scale-110 transition-all">
+        <i class="fas fa-volume-up"></i>
+    </button>
+
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+            class="absolute -top-10 -left-10 w-40 h-40 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob">
+        </div>
+        <div
+            class="absolute top-0 right-0 w-60 h-60 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute -bottom-10 left-20 w-60 h-60 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000">
+        </div>
+    </div>
+    <div
+        class="max-w-3xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition-all duration-500">
+        <div class="bg-gradient-to-r from-mom-pink to-mom-rose p-8 text-center">
+            <h1 class="font-great-vibes lovely-title text-5xl md:text-6xl text-white drop-shadow-lg mb-2">To My
+                Wonderful Mom</h1>
+            <p class="font-satisfy text-white/90 italic text-glow">With all my love</p>
+        </div>
+
+        <div class="p-8 md:p-12 bg-gradient-to-b from-white to-mom-lavender/20">
+            <div class="heart"></div>
+
+            <!-- Language Selection Buttons -->
+            <div class="flex justify-center space-x-2 mb-6">
+                <button id="btn-english"
+                    class="lang-btn px-4 py-2 rounded-full bg-mom-rose text-white font-poppins text-sm shadow-md transition-all hover:shadow-lg">English</button>
+                <button id="btn-telugu"
+                    class="lang-btn px-4 py-2 rounded-full bg-white text-mom-rose font-poppins text-sm shadow-md transition-all hover:shadow-lg">తెలుగు</button>
+                <button id="btn-hindi"
+                    class="lang-btn px-4 py-2 rounded-full bg-white text-mom-rose font-poppins text-sm shadow-md transition-all hover:shadow-lg">हिंदी</button>
+            </div>
+
+            <!-- English Content -->
+            <div id="english-content" class="language-content space-y-6 font-playfair text-gray-800 love-letter">
+                <p class="text-2xl leading-relaxed font-satisfy text-glow">
+                    Dear Mom,
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    Mom, if I had to define what love looks like, I'd simply point to you. Your love is the kind that
+                    asks for nothing in return, yet gives everything—so freely, so completely, and so beautifully.
+                    You've been my safe haven, my guiding light, and the quiet strength that has held me up even when I
+                    didn't know I needed it. In your eyes, I have always seen patience, in your hands, I have always
+                    found comfort, and in your heart, I have always known home.
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    From the very beginning, you have been my greatest teacher—showing me not just how to walk and talk,
+                    but how to love, how to forgive, how to stand tall even when the world feels heavy. Your sacrifices,
+                    often unseen, have paved the way for my joy. You've always put my happiness ahead of your own, and
+                    that kind of selfless love is something I will never stop being grateful for.
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    Even in my lowest moments, your belief in me never wavered. You've celebrated my smallest victories
+                    as if they were the greatest triumphs and lifted me through my failures without ever making me feel
+                    small. You've taught me to be kind, to be strong, and to never lose faith in myself. That wisdom
+                    lives in me every single day.
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    Your smile lights up my world in ways I can't explain. It brings peace to my heart and reminds me
+                    that no matter where life takes me, I'll always carry a piece of you within me. I am who I am
+                    because of your love, your values, and your example.
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    On this Mother's Day, I want you to know how deeply I cherish you. Not just as my mother, but as the
+                    incredible woman you are—so full of grace, warmth, and unwavering love. Thank you for being my
+                    forever friend, my protector, my strength, and my everything.
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    I love you more than words will ever be able to hold, and I am endlessly blessed to be your child.
+                </p>
+
+                <p class="text-2xl font-great-vibes text-right mt-8 text-glow">
+                    With all our hearts,<br>
+                    Sathvi and Koushi
+                </p>
+            </div>
+
+            <!-- Telugu Content -->
+            <div id="telugu-content" class="language-content hidden space-y-6 font-playfair text-gray-800 love-letter">
+                <p class="text-2xl leading-relaxed font-satisfy text-glow">
+                    ప్రియమైన అమ్మా,
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    అమ్మా, ప్రేమ ఎలా ఉంటుందో నేను నిర్వచించాలంటే, నేను కేవలం నిన్ను చూపిస్తాను. నీ ప్రేమ ప్రతిఫలం
+                    కోరుకోకుండా, అన్నింటినీ ఇస్తుంది - అంత స్వేచ్ఛగా, అంత పూర్తిగా, అంత అందంగా. నువ్వు నా సురక్షిత
+                    స్థావరంగా, నా మార్గదర్శక కాంతిగా, నాకు అవసరమని తెలియకపోయినా నన్ను పైకి లేపిన నిశ్శబ్ద శక్తిగా
+                    ఉన్నావు. నీ కళ్ళలో నేను ఎల్లప్పుడూ సహనాన్ని చూశాను, నీ చేతుల్లో నేను ఎల్లప్పుడూ ఆదరణను కనుగొన్నాను,
+                    మరియు నీ హృదయంలో నేను ఎల్లప్పుడూ ఇంటిని తెలుసుకున్నాను.
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    మొదటి నుండి, నువ్వు నా గొప్ప గురువుగా ఉన్నావు - నాకు నడవడం, మాట్లాడటం మాత్రమే కాకుండా, ప్రేమించడం,
+                    క్షమించడం, ప్రపంచం బరువుగా అనిపించినప్పుడు కూడా నిటారుగా నిలబడటం ఎలాగో చూపించావు. నీ త్యాగాలు,
+                    తరచుగా కనిపించనివి, నా ఆనందానికి మార్గం సుగమం చేశాయి. నువ్వు ఎల్లప్పుడూ నీ సంతోషం కంటే నా సంతోషానికి
+                    ప్రాధాన్యత ఇచ్చావు, మరియు అలాంటి నిస్వార్థ ప్రేమకు నేను ఎప్పటికీ కృతజ్ఞతలు చెప్పడం మానను.
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    నా అత్యంత కష్ట సమయాల్లో కూడా, నా పట్ల నీ నమ్మకం ఎప్పుడూ సడలలేదు. నువ్వు నా చిన్న విజయాలను అవి గొప్ప
+                    విజయాలు అయినట్లుగా జరుపుకున్నావు మరియు నన్ను ఎప్పుడూ చిన్నబుచ్చకుండా నా వైఫల్యాల నుండి పైకి లేపావు.
+                    నువ్వు నాకు దయగా ఉండటం, బలంగా ఉండటం మరియు నా పట్ల నమ్మకాన్ని ఎప్పుడూ కోల్పోకుండా ఉండటం నేర్పించావు.
+                    ఆ జ్ఞానం ప్రతి రోజూ నాలో నివసిస్తుంది.
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    నీ చిరునవ్వు నా ప్రపంచాన్ని నేను వివరించలేని విధాలుగా వెలిగిస్తుంది. అది నా హృదయానికి శాంతిని
+                    తెస్తుంది మరియు జీవితం నన్ను ఎక్కడికి తీసుకెళ్లినా, నేను ఎల్లప్పుడూ నీలో ఒక భాగాన్ని నాలో
+                    మోసుకెళతానని గుర్తు చేస్తుంది. నేను ఎవరినైతే ఉన్నానో అది నీ ప్రేమ, నీ విలువలు మరియు నీ ఉదాహరణ
+                    వల్లనే.
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    ఈ మదర్స్ డే నాడు, నేను నిన్ను ఎంతగా చేరుకుంటున్నానో నీకు తెలియాలని కోరుకుంటున్నాను. కేవలం నా తల్లిగా
+                    మాత్రమే కాదు, నువ్వు ఉన్న అద్భుతమైన మహిళగా - అంత దయతో, వెచ్చదనంతో మరియు అచంచలమైన ప్రేమతో నిండి
+                    ఉన్నావు. నా శాశ్వత స్నేహితురాలిగా, నా రక్షకురాలిగా, నా బలంగా మరియు నా సర్వస్వంగా ఉన్నందుకు
+                    ధన్యవాదాలు.
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    నేను నిన్ను మాటలు ఎప్పటికీ పట్టుకోలేనంత ప్రేమిస్తున్నాను, మరియు నేను నీ బిడ్డగా ఉన్నందుకు అనంతంగా
+                    ధన్యుడను.
+                </p>
+
+                <p class="text-2xl font-great-vibes text-right mt-8 text-glow">
+                    నా హృదయపూర్వక ప్రేమతో,<br>
+                    సాత్వి మరియు కౌశి
+                </p>
+            </div>
+
+            <!-- Hindi Content -->
+            <div id="hindi-content" class="language-content hidden space-y-6 font-playfair text-gray-800 love-letter">
+                <p class="text-2xl leading-relaxed font-satisfy text-glow">
+                    प्रिय माँ,
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    माँ, अगर मुझे परिभाषित करना होता कि प्यार कैसा दिखता है, तो मैं बस आपकी ओर इशारा करूंगा। आपका प्यार
+                    ऐसा है जो बदले में कुछ नहीं मांगता, फिर भी सब कुछ देता है - इतनी आज़ादी से, इतनी पूरी तरह से, और
+                    इतनी खूबसूरती से। आप मेरा सुरक्षित आश्रय, मेरी मार्गदर्शक रोशनी, और वह शांत ताकत रही हैं जिसने मुझे
+                    तब भी संभाला जब मुझे नहीं पता था कि मुझे इसकी ज़रूरत है। आपकी आंखों में, मैंने हमेशा धैर्य देखा है,
+                    आपके हाथों में, मैंने हमेशा आराम पाया है, और आपके दिल में, मैंने हमेशा घर जाना है।
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    शुरू से ही, आप मेरी सबसे बड़ी शिक्षक रही हैं - मुझे सिर्फ चलना और बात करना ही नहीं, बल्कि प्यार
+                    करना, माफ करना, तब भी सीधे खड़े रहना सिखाया जब दुनिया भारी लगती है। आपके बलिदान, अक्सर अनदेखे, मेरी
+                    खुशी के लिए रास्ता बनाते हैं। आपने हमेशा मेरी खुशी को अपनी खुशी से आगे रखा है, और इस तरह के
+                    निस्वार्थ प्यार के लिए मैं कभी भी आभारी होना बंद नहीं करूंगा।
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    मेरे सबसे कम क्षणों में भी, मुझ पर आपका विश्वास कभी नहीं डगमगाया। आपने मेरी छोटी-छोटी जीत को ऐसे
+                    मनाया जैसे वे सबसे बड़ी जीत हों और मुझे कभी भी छोटा महसूस कराए बिना मेरी असफलताओं से उबारा। आपने
+                    मुझे दयालु बनना, मजबूत बनना, और खुद पर कभी भरोसा न खोना सिखाया है। वह ज्ञान हर दिन मेरे अंदर जीवित
+                    रहता है।
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    आपकी मुस्कान मेरी दुनिया को ऐसे तरीकों से रोशन करती है जिसे मैं समझा नहीं सकता। यह मेरे दिल को शांति
+                    देता है और मुझे याद दिलाता है कि जीवन मुझे कहीं भी ले जाए, मैं हमेशा अपने अंदर आपका एक हिस्सा लेकर
+                    चलूंगा। मैं जो हूं वह आपके प्यार, आपके मूल्यों और आपके उदाहरण के कारण हूं।
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    इस मातृ दिवस पर, मैं चाहता हूं कि आप जानें कि मैं आपको कितना गहराई से संजोता हूं। न सिर्फ मेरी मां
+                    के रूप में, बल्कि उस अद्भुत महिला के रूप में जो आप हैं - इतनी कृपा, गर्मजोशी और अडिग प्यार से भरी
+                    हुई। मेरी हमेशा की दोस्त, मेरी रक्षक, मेरी ताकत और मेरा सब कुछ होने के लिए धन्यवाद।
+                </p>
+
+                <p class="text-lg leading-relaxed">
+                    मैं आपसे शब्दों से कहीं ज्यादा प्यार करता हूं, और मैं आपका बच्चा होने के लिए अनंत रूप से आशीर्वादित
+                    हूं।
+                </p>
+
+                <p class="text-2xl font-great-vibes text-right mt-8 text-glow">
+                    अपने पूरे दिल से,<br>
+                    सात्वी और कौशी
+                </p>
+            </div>
+
+            <div class="flex justify-center mt-12">
+                <div class="w-32 h-1 bg-gradient-to-r from-mom-gold to-mom-rose rounded-full shadow-md"></div>
+            </div>
+
+            <p class="text-center font-pacifico text-gray-600 mt-8 text-base">
+                No words could ever fully express how much you mean to me.
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-8 text-center">
+        <p class="font-great-vibes text-3xl text-mom-rose text-glow floating">I love you, Mom!</p>
+    </div>
+</body>
+
+</html>
